@@ -16,8 +16,7 @@ function onChange() {
 async function BuildPie(state) {
   var state = document.getElementById('dropDown1').value;
   var year = document.getElementById('dropDown2').value;
-  var URL = 'https://wildfire-api-3.herokuapp.com/api/v1.0/interactive_pie/' + state + '/' + year;
-  alert(URL);
+  var url = 'https://wildfire-api-3.herokuapp.com/api/v1.0/interactive_pie/' + state + '/' + year;
   var data = await d3.json(url);
     console.log(data);
 
@@ -53,10 +52,9 @@ async function BuildPie(state) {
 function GetURL(){
   var state = document.getElementById('dropDown1').value;
   var year = document.getElementById('dropDown2').value;
-  var URL = 'https://wildfire-api-3.herokuapp.com/api/v1.0/interactive_pie/' + state + '/' + year;
-  alert(URL);
+  var url = 'https://wildfire-api-3.herokuapp.com/api/v1.0/interactive_pie/' + state + '/' + year;
 
-  d3.csv(URL).then((data) => {
+  d3.json(url).then((data) => {
     console.log(data);
 
     var dropdown = d3.select("#dropDown1");
