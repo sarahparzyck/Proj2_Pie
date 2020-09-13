@@ -1,104 +1,83 @@
-// Submit Button handler
-// function GetURL() {
+// =-+-=-+-=-+-=-+-=-+-=-+-=-+-=-+-=-+-=-+-=-+-=-+-=-+-=-+-=-+-=-+-=-+-=-+-=-+-=-+-=-+-=-+-=-+-=
+// Create a function to read in the JSON using D3
 
+function CreateURL(state, year) {  
 
-//   //Use D3 to select the dropdown menu
-//   var dropdownMenu = d3.selectAll("#dropDown1").node();
-//   // Assign the dropdown menu option to a variable
-//   var selectedOption = dropdownMenu.value;
-//   console.log(selectedOption);
-//   // // Create the plots based on selections
-//   // BuildPie(selectedOption);
-//   };
-
-function CreateURL(state, year) {
   var state = document.getElementById('dropDown1').value;
+  console.log(state);
+
   var year = document.getElementById('dropDown2').value;
   console.log(year);
-  console.log(state);
-  var url = 'https://wildfire-api-3.herokuapp.com/api/v1.0/interactive_pie/' + state + '/' + year;
+
+  const url = 'https://datavisproject2.herokuapp.com/api/v1.0/interactive_pie/'+state+'/'+year;  
   d3.json(url).then((data) => {
     console.log(data);
+  });
 
-})};
+  buildPieChart(state, year);
+};
 
-// function BuildPie(state, year) {
+// =-+-=-+-=-+-=-+-=-+-=-+-=-+-=-+-=-+-=-+-=-+-=-+-=-+-=-+-=-+-=-+-=-+-=-+-=-+-=-+-=-+-=-+-=-+-=
+// Create a function to populate the pie charts with corresponding values for the selected state and year
+function buildPieChart() {
 
+  var state = document.getElementById('dropDown1').value;
+  var year = document.getElementById('dropDown2').value;
+  const url = 'https://datavisproject2.herokuapp.com/api/v1.0/interactive_pie/'+state+'/'+year;
+  d3.json(url).then((data) => {
 
-//   // var state = data.map(row => row[8]);
-//   // var year = data.map(row => row[9]);
+    var state = Object.values(data[0])[7]
+    data.map(x => x[state]);
+    console.log(state);
 
-//   // Grab values from the response csv object to build the plots
-  
-//   var cause1 = data.map(row => row[0]);
+    var countNatural = 0;
+    var countHuman = 0
+    var countUnknown = 0
 
-//   // Sort and count each cause in cause1
-//   var statistics = Object.keys(data).reduce(function (stats, key) {
-//     var item = data[key];
-//     if (item.cause1 === 'Natural') {
-//       stats.Natural += 1;
-  
-//     if (item.cause1 === 'Human') {
-//         stats.Human += 1;
+    // Define the count of fires by cause (Level 1 cause)
+    data.forEach(data => {
+      var fireCause = data.cause1
+      console.log(fireCause);
+        if (fireCause === "Human") {
+          countHuman = countHuman + 1;
+        }        
+        else if (fireCause === "Natural") {
+          countNatural = countNatural + 1;
+        }    
+        else {
+          countUnknown = countUnknown + 1;
+        }
+    });    
+    console.log(countHuman, countNatural, countUnknown);
 
-//     if (item.cause1 === 'Unknown') {
-//         stats.Unknown += 1;
-//       }
-//     }
-//   }
-//     return stats;
-//   }, { Natural: 0, Human: 0, Unknown: 0 });
-  
-//   console.log('statistics : ', statistics);
-
-
-//   // function counter(h, n, u) {
-//   //   return json.export.filter(function(elem) {
-//   //     return elem.human===h && elem.natural===n && elem.unknown===u;
-//   //   }).length;
-//   // }
-
-//   // Create trace for pie plot
-//   var trace1 = {
-//     type: "pie",
-//     values: statistics,
-//     labels: cause1,
-//   };
-
-//   var data = [trace1];
-
-//   var layout = {
-//     title: `${state}`,
-//     height: 600,
-//     width: 800
-//     }
-
-//   Plotly.newPlot("plot", data, layout);
-// };
-
-// Add event listener for submit button
-d3.selectAll("body").on("change", CreateURL);
-
-// Create one drop downs
-// function GetURL(){
-//   var state = document.getElementById('dropDown1').value;
-//   var year = document.getElementById('dropDown2').value;
-//   var url = 'https://wildfire-api-3.herokuapp.com/api/v1.0/interactive_pie/' + state + '/' + year;
-  
-//   d3.json(url).then((data) => {
-//     console.log(data);
-//     console.log(url);
-
-//     var dropdown = d3.select("#dropDown1");
+    // Define the attributes for values, labels, type, markers, text and labels
+    var pieData = [{
+      values: [countHuman, countNatural, countUnknown],
+      labels: ["Human", "Natural", "Undetermined"],
+      type: "pie",
+      font: {family: "Calibri", size: 19, },
+      textinfo: "label+percent",
+      textposition: "inside",
+      marker: {colors: ["#DB2E27", "#74B643", "#FFE571"]},
+      automargin: false
+    }]
     
-//     data.st.forEach(function(state) {
-//       dropdown.append("option").text(st).property("value");
-//     });
+    // Define the layout of the plot
+    let pieLayout = {
+      title: `${state}`,
+      height: 470,
+      width: 470,
+      margin: {"t": 0, "b": 0, "l": 0, "r": 0},
+      showlegend: false
+      }
+    
+    var config ={responsive:true}
 
-//   // Create the plots based on the first state
-//   let state = data.st[0];
-//   // Create the plots based on state
-//   BuildPie(state);
+    // Render the plot to the div tag with id "pie"
+    Plotly.plot('pie', pieData, pieLayout)
+  })
+}
 
-// })};
-
+// =-+-=-+-=-+-=-+-=-+-=-+-=-+-=-+-=-+-=-+-=-+-=-+-=-+-=-+-=-+-=-+-=-+-=-+-=-+-=-+-=-+-=-+-=-+-=
+// Add an event listener for submit button
+d3.selectAll("body").on("change", CreateURL);

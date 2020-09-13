@@ -1,19 +1,34 @@
+<!-- Declare the type of document we're sending -->
 <!DOCTYPE html>
-<html lang="en">
 
+<!-- Declare the opening tag and the language-->
+<html lang = "en">
+
+<!-- Declare the start of metadata -->
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Wildfires</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.9.7/d3.min.js"></script>
-  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+  <!-- Declare the character set encoding -->
+  <meta charset = "UTF-8">
+  <meta name = "viewport" content = "width=device-width, initial-scale = 1.0">
+  <meta http-equiv = "X-UA-Compatible" content = "ie=edge">
+
+  <!-- Declare the title for this tab -->
+  <title> Wildfires </title>
+
+  <!-- Declare the D3 JavaScript and Plotly -->
+  <script src = "https://cdnjs.cloudflare.com/ajax/libs/d3/5.9.7/d3.min.js"></script>
+  <script src = "https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+<!-- Declare the end of metadata -->
 </head>
 
-
+<!-- Declare the main body of code -->
 <body>
-    <h2>Choose State & Year</h2>
 
+    <!-- Define the user prompt -->
+    <h2> Choose a State and a Year </h2>
+
+    <!-- Define the State dropdown -->
     <select id="dropDown1">
       <option value="Alabama">Alabama</option>
       <option value="Alaska">Alaska</option>
@@ -44,6 +59,7 @@
       <option value="Montana">Montana</option>
       <option value="Nebraska">Nebraska</option>
       <option value="Nevada">Nevada</option>
+      <option value="New Hampshire">New Jersey</option>
       <option value="New Jersey">New Jersey</option>
       <option value="New Mexico">New Mexico</option>
       <option value="New York">New York</option>
@@ -67,6 +83,7 @@
       <option value="Wyoming">Wyoming</option>
     </select>  
 
+    <!-- Define the Year dropdown -->
     <select id="dropDown2">
       <option value="2013">2013</option>
       <option value="2014">2014</option>
@@ -75,11 +92,15 @@
       <option value="2017">2017</option>
     </select>
     
-    <button onclick="GetURL()">Run</button>
+    <!-- Define the Run button -->
+    <!-- <button onclick = "CreateURL()"> Run </button> -->
 
-    <div id="pie"></div>
+    <!-- Declare the div that holds our pie chart -->
+    <div id = "pie"></div>
 
-    <script src="plots.js"></script>
+    <!-- Declare the JavaScript code -->
+    <script src = "plots.js"></script>
+
+<!-- Declare the closing body and html tags -->
 </body>
-
 </html>
