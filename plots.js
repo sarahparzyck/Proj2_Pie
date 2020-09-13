@@ -27,27 +27,24 @@ async function BuildPie(state, year) {
   console.log(data)
 
 
-  // Grab values from the response csv object to build the plots
-  
-  var cause1 = Object.values(data[0])[0]
-  data.map(x => x[cause1]);
-  console.log(cause1);
+  // Grab values from the response json object to build the plots
 
-  var state = Object.values(data[0])[8]
+  var state = Object.values(data[0])[7]
   data.map(x => x[state]);
   console.log(state);
 
 
-  // Sort and count each cause in cause1
-  var statistics = Object.values(data).reduce(function (stats, key) {
-    var item = data[key];
-    if (item.cause1 === 'Natural') {
+
+  // Trying to figure out how to count these still - right now it is making a pie chart but all are 0 therefore 33.3% each
+  var statistics = Object.values(data).reduce(function (stats, value) {
+    var item = data[value];
+    if (item === 'Natural') {
       stats.Natural += 1;
   
-    if (item.cause1 === 'Human') {
+    if (item === 'Human') {
         stats.Human += 1;
 
-    if (item.cause1 === 'Unknown') {
+    if (item === 'Unknown') {
         stats.Unknown += 1;
       }
     }
@@ -61,10 +58,10 @@ async function BuildPie(state, year) {
   var trace1 = {
     type: "pie",
     values: statistics,
-    labels: cause1,
+    labels: ["Natural", "Human", "Unknown"]
   };
 
-  var data = [trace1];
+  var data_two = [trace1];
 
   var layout = {
     title: `${state}`,
@@ -72,17 +69,9 @@ async function BuildPie(state, year) {
     width: 800
     }
 
-  Plotly.newPlot("plot", data, layout);
+  Plotly.newPlot("pie", data_two, layout);
 };
 
 
-// Add event listener for submit button
+// Add event listener for submit button - this button is still weird and doesn't wait for the button to actually be pressed
 d3.selectAll("body").on("click", CreateURL);
-
-
-
-  // function counter(h, n, u) {
-  //   return json.export.filter(function(elem) {
-  //     return elem.human===h && elem.natural===n && elem.unknown===u;
-  //   }).length;
-  // }
